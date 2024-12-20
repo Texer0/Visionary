@@ -2,7 +2,6 @@ import './App.css'
 import './index.css';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import dotenv from 'dotenv'
 
 import Logo from './components/Logo/Logo';
 import Navbar from './components/NavBar/NavBar'
@@ -15,9 +14,6 @@ import Project from './components/pages/Project';
 import NewProject from './components/pages/NewProject';
 
 function App() {
-    let isLoggedIn = false
-    dotenv.config()
-
   return (
     <>
     <Toaster>

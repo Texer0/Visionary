@@ -1,23 +1,19 @@
 <img src="frontend/src/assets/Visionary.png" alt="Visionary">
 
-Una herramienta para la organización y planificación de proyectos para equipos de desarrollo de software.
+A tool for organization of software development teams.
 <br><br>
 
-## Características:
-- 2FA con Google Authenticator
+## Features:
+- 2FA with Google Authenticator
 - Chat
-- Gestor de tareas
-- Calendario
-- Interfaz personalizable
+- Manager of tasks
+- Schedule
+- Interface customizable
 <br><br>
 
-## Tecnologías:
-
-### Front:
-- React
-- Tailwind
-
-### Back:
+## Technologies:
 - Node.js
 - Express
 - MySQL
+- React
+- Tailwind

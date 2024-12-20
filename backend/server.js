@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import QRCode from 'qrcode'
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+import cors from 'cors';
 
 import { select_query, delete_query, insert_into_query, update_query } from './src/DataBase Administrator.js'
 import { create_JWT, validate_register } from './src/Functions.js'
@@ -56,6 +57,12 @@ app.use((req, res, next) => {
     return res.redirect('/login')
 })
 
+
+app.use(cors({
+    origin: 'http://localhost:4001',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.get('/', (req, res) => {
     return res.redirect('/home')
@@ -111,27 +118,22 @@ app.get('/register', (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-    const { name, email, password, repeat_password } = req.body
+    const { name, email, password } = req.body
+    
+    var IsValid = await validate_register(name, email)
 
-    if (password !== repeat_password) {
-        res.status(400).send('Passwords do not match')
-        return
+    if (typeof IsValid === 'string') {
+        return res.send({ data: `${IsValid}`, status: 400 })
     }
-
-    var IsValid = await validate_register(name, email, password)
-
-    if (IsValid === true) {
-        console.log("Generando usuario".bgYellow)
-        let hashedPassword = await bcrypt.hash(password, (parseInt(process.env.DEBUG) ? 1 : 10))
-        
-        await insert_into_query('user', 'name, email, password, hash', `'${name}', '${email}', '${hashedPassword}', '${v4()}'`)
-        res.status(201)
-        return res.redirect('/home')
-    } else {
-        console.log('Error:', IsValid)
-        return res.status(400).send(`${IsValid}`)
-        // Añadir una notificación más estética
-    }   
+    console.log("Generating user".bgYellow)
+    let hashedPassword = await bcrypt.hash(password, (parseInt(process.env.DEBUG) ? 1 : 10))
+    
+    try {
+        // await insert_into_query('user', 'name, email, password, hash', `'${name}', '${email}', '${hashedPassword}', '${v4()}'`)
+        return res.send({status: 201})
+    } catch (err) {
+        return res.send({data: 'A problem has ocurred with registration', status: 400})
+    }        
 })
 
 app.get('/home', (req, res) => {

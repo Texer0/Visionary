@@ -1,50 +1,101 @@
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import validator from 'validator'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+
 import FormConteiner from '../FormConteiner/FormConteiner'
 import Input from '../Input/Input'
-import { toast } from 'sonner'
 import { style_warning, style_success, style_error, style_info } from '../../../styles_warnings'
+import { doRequest } from '../../../requests'
+
 
 const RegisterForm = ({}) => {
     const { register, handleSubmit, watch, reset, formState: { errors }, setError } = useForm()
-
-    fetch('http://localhost:4000/register')
-        .then(response => response.json())
-        .then(data => console.log(data))
-
-    const handleSubmitForm = (event) => {
+    const navigate = useNavigate()
+    const handleSubmitForm = async (event) => {
         const username = watch('username')
         const email = watch('email')
         const password = watch('password')
         const password_repeated = watch('password_repeated')
 
-        // si la contraseña no es la indicada
-        // Si el email ya está en uso
-        // Si el username ya está en uso
+        
+        if (username.length < 6) {
+            toast.warning('Name must be at least 6 character', {
+                duration: 3000,
+                style: style_warning,
+            })
+            return
+        }
+
+        if (!validator.isEmail(email)) {
+            toast.warning('Email invalid', {
+                duration: 3000,
+                style: style_warning,
+            })
+            return
+        }
+
+        if (password.length < 8) {
+            toast.warning('The password must be at least 8 characters', {
+                duration: 3000,
+                style: style_warning,
+            })
+            return
+        }
         
         if (password != password_repeated) {
             toast.warning('Passwords do not match', {
-                duration: 40000,
+                duration: 3000,
                 style: style_warning,
             })
+            return
         }
-              
 
+        try {
+            var result = await doRequest('register', 'POST', { 
+                name: username,
+                email: email,
+                password: password
+            })
 
-        console.log("Fuera del handler", username)
-        console.log("Fuera del handler", email)
-        console.log("Fuera del handler", password)
-        console.log("Fuera del handler", password_repeated)
+        } catch (e) {
+            toast.error('A problem has ocurred with registration', {
+                duration: 3000,
+                style: style_error,
+            })
+            return
+        }
 
-        reset()
+        if (result.data.data) {
+            toast.error(result.data.data, {
+                duration: 3000,
+                style: style_error,
+            })
+            return
+        }
+        
+        if (result.status >= 200 && result.status < 300) {
+            toast.success('Registration successful', {
+                duration: 3000,
+                style: style_success,
+            })
+            navigate('/home')
+            return
+        } else {
+            toast.error(result.data, {
+                duration: 3000,
+                style: style_error,
+            })
+            return
+        }
     }
-
-
-    console.log(errors)
 
     return (
         <FormConteiner>
         <form onSubmit={handleSubmit(handleSubmitForm)}>
-            <div className=''>
+            <div>
 
                 <Input type='text' placeholder='Username' 
                     {...register('username')} required/>
