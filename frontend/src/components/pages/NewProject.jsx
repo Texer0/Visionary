@@ -1,21 +1,49 @@
-import Input from "../Forms/Input/Input"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
+
+import Input from "../Forms/Input/Input"
+import { doRequest } from "../../utils/requests"
+import { style_error, style_success } from "../../utils/styles_warnings"
+import { getCookie } from "../../utils/coockie_managment"
+
 
 function NewProject() {
     const { register, handleSubmit, reset, formState: { errors }, watch } = useForm()
 
-    const handleSubmitForm = (event) => {
+    const navigate = useNavigate()
+
+    const handleSubmitForm = async () => {
         const title = watch('title')
         const description = watch('description')
         const link = watch('link')
 
-        // check Database
+        const user = await getCookie('Visionary_user_data')
 
-        console.log("Fuera del handler", title)
-        console.log("Fuera del handler", description)
-        console.log("Fuera del handler", link)
+        const data = {
+            title: title,
+            description: description,
+            link: link,
+            email: user.email
+        }
 
-        reset()
+        const result = await doRequest('bd_request/new_project', 'POST', data)
+        console.log("Result: ", result)
+        if (result.status === 201 && result.id) {
+            toast.success("Creation success", {
+                duration: 3000,
+                style: style_success,
+            })
+
+            // navigate(`/project:${result.id}`)
+        }
+
+        if (result.status === 500) {
+            toast.error("Internal Server Error", {
+                duration: 3000,
+                style: style_error,
+            })
+        }
     }
 
     return (

@@ -1,20 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import validator from 'validator'
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
 import FormConteiner from '../FormConteiner/FormConteiner'
 import Input from '../Input/Input'
-import { style_warning, style_success, style_error, style_info } from '../../../styles_warnings'
-import { doRequest } from '../../../requests'
+import { style_warning, style_success, style_error, style_info } from '../../../utils/styles_warnings'
+import { doRequest } from '../../../utils/requests'
 
 
 const RegisterForm = ({}) => {
     const { register, handleSubmit, watch, reset, formState: { errors }, setError } = useForm()
     const navigate = useNavigate()
     const handleSubmitForm = async (event) => {
+
         const username = watch('username')
         const email = watch('email')
         const password = watch('password')
@@ -68,8 +68,8 @@ const RegisterForm = ({}) => {
             return
         }
 
-        if (result.data.data) {
-            toast.error(result.data.data, {
+        if (result.data) {
+            toast.error(result.data, {
                 duration: 3000,
                 style: style_error,
             })
@@ -83,6 +83,7 @@ const RegisterForm = ({}) => {
             })
             navigate('/home')
             return
+        
         } else {
             toast.error(result.data, {
                 duration: 3000,
