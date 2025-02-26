@@ -13,7 +13,7 @@ import Projects from './components/pages/Projects'
 import NotFound from './components/pages/NotFound' 
 import Project from './components/pages/Project' 
 import NewProject from './components/pages/NewProject' 
-import AuthGuard from './components/Guard/AuthGuard'
+import AuthGuard from './components/AuthGuard/AuthGuard'
 import Logout from './components/Logout/Logout'
 
 function App() {

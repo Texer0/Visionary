@@ -24,16 +24,6 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
-// app.use((req, res, next) => {
-
-//     if ((req.path === '/login') || (req.path === '/register')) {return next()}
-//     else if (req.path === '/2fa') {next()}
-    
-//     if (req.session && req.session.user) {return next()}
-    
-//     return res.redirect('/login')
-// })
-
 app.use(cors({
     origin: `http://${HOST}:4001`,
     credentials: true,
