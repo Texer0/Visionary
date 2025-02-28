@@ -15,6 +15,7 @@ import Project from './components/pages/Project'
 import NewProject from './components/pages/NewProject' 
 import AuthGuard from './components/AuthGuard/AuthGuard'
 import Logout from './components/Logout/Logout'
+import Welcome from './components/pages/Welcome'
 
 function App() {
   return (
@@ -25,16 +26,15 @@ function App() {
 
         <Navbar/>
         <Logo/>
-		<Logout></Logout>
-
         <Routes>
             <Route path='/'>
 
-                <Route path='/home' element={<Home/>} />
+                <Route path='/welcome' element={<Welcome/>} />
                 <Route path='/login' element={<LogInForm/>} />
                 <Route path='/register' element={<RegisterForm/>} />
 
 				<Route element={<AuthGuard/>} >
+                    <Route path='/home' element={<Home/>} />
 					<Route path='/projects' element={<Projects/>} />
 					<Route path='/projects/project/:id' element={<Project/>} />
 					<Route path='/new_project' element={<NewProject/>} />
