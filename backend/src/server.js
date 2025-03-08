@@ -10,7 +10,7 @@ import cors from 'cors'
 
 import route_login from './routes/login.js'
 import route_register from './routes/register.js'
-import route_bd_request from './routes/bd_request.js'
+import route_projects from './routes/projects.js'
 import route_cookies from './routes/cookies.js'
 
 dotenv.config({ path: '../.env' })
@@ -37,7 +37,7 @@ app.use('/login', route_login)
 
 app.use('/register', route_register)
 
-app.use('/bd_request', route_bd_request)
+app.use('/projects', route_projects)
 
 app.use('/cookies', route_cookies)
 
@@ -55,10 +55,6 @@ app.use('/cookies', route_cookies)
 //     res.render('admin')
 // })
 
-
-// app.get('/logout', (req, res) => {
-//     res.clearCookie('access_token')
-// })
 
 
 // app.get('/2fa', async (req, res) => {
@@ -101,29 +97,6 @@ app.use('/cookies', route_cookies)
 //     res.status(200).redirect('/home')
 
 // })
-
-
-
-
-
-
-// app.get('/project/:id', async (req, res) => {
-//     const { id } = req.params
-//     const user = req.session.user
-
-//     const result = await select_query('user_has_project', 'project_id', `user_hash = '${user.hash}'`)
-
-//     for (const project_id of result) {
-//         if (project_id.project_id === parseInt(id)) {
-//             return res.json(await select_query('project', '*', `id = ${id}`))
-//         }
-//     }
-
-//     return res.status(404).send('Project not found')
-//     // lists
-//     // tasks of list
-// })
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://${HOST}:${PORT}`)

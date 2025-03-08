@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import dotenv from 'dotenv'
 
 import { style_warning, style_success, style_error, style_info } from '../../../utils/styles_warnings'
@@ -53,20 +53,25 @@ function LogInForm () {
 
 
     return (
-        <FormConteiner>
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
-                <div>
-                    <Input type='email' placeholder='Email'{...register('email')} required/>
-                    <br/>
-                    <Input type='password' placeholder='Password' {...register('password')} required/>
-                </div>
+        <>
+            <FormConteiner>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                    <div>
+                        <Input type='email' placeholder='Email'{...register('email')} required/>
+                        <br/>
+                        <Input type='password' placeholder='Password' {...register('password')} required/>
+                    </div>
 
-                <div className='m-2'>
-                    <button className=' w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white'
-                    type="submit">Submit</button>
-                </div>
-            </form>
-        </FormConteiner>
+                    <div className='m-2'>
+                        <button className=' w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
+                        type="submit">Submit</button>
+                    </div>
+                </form>
+            </FormConteiner>
+            <Link to= '/register'>
+                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-white'>Do not have an account?</p>
+            </Link>
+        </>
     )
 }
 

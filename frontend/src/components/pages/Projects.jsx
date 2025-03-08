@@ -8,21 +8,21 @@ import { doRequest } from "../../utils/requests"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
-function Projects() {    
+function Projects() {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 9
-
-    const [projectsFromUser, setProjectsFromUser] = useState([])
 
     const handlePageChange = (page) => {
         setCurrentPage(page)
     }
+    
+    const [projectsFromUser, setProjectsFromUser] = useState([])
 
     useEffect(() => {
         const askForProjects = async () => {
             try {
                 var userData = getCookie('Visionary_user_data')
-                const result = await doRequest('bd_request/projects', 'POST', userData)
+                const result = await doRequest('projects', 'POST', userData)
                 
                 if (result.status === 404) {
                     setProjectsFromUser([])
@@ -43,7 +43,8 @@ function Projects() {
 
     const projects = projectsFromUser.map((project, index) => ({
         name: project.title || `Project ${index + 1}`,
-        link: project.link
+        link: project.link,
+        id: project.id
     }))
 
     const totalPages = Math.ceil(projects.length / itemsPerPage)

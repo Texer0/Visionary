@@ -11,7 +11,6 @@ const Home = () => {
             </div>
 
             <Button toPage='/projects'>Projects</Button>
-            <Button toPage='/project'>Project</Button>
 
         </div>
     )

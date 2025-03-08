@@ -7,9 +7,9 @@ dotenv.config({ path: '../.env' })
 
 const DEBUG = process.env.DEBUG
 
-const route_bd_request = express.Router()
+const route_projects = express.Router()
 
-route_bd_request.post('/projects', async (req, res) => {
+route_projects.post('/', async (req, res) => {
     const email = req.body.email
     
     console.log(email)
@@ -43,7 +43,7 @@ route_bd_request.post('/projects', async (req, res) => {
 })
 
 
-route_bd_request.post('/new_project', async (req, res) => {
+route_projects.post('/new_project', async (req, res) => {
     const { title, description, link, email } = req.body
 
     try {
@@ -68,10 +68,38 @@ route_bd_request.post('/new_project', async (req, res) => {
 })
 
 
+route_projects.post('/project', async (req, res) => {
+    const { email, id } = req.body
+    
+    try {
+        var hash = await select_query('user', 'hash', `email = '${email}'`)
+        hash = hash[0].hash
+        
+        const result = await select_query('user_has_project', 'project_id', `user_hash = '${hash}'`)
+        
+        console.log("Result in backend", result)
+        
+        for (const project_id of result) {
+            if (project_id.project_id === parseInt(id)) {
+                const project = await select_query('project', '*', `id = ${id}`)
+                return res.send({ status: 200, project: project[0] })
+            }
+        }
+        
+        return res.send({ status: 404, message: 'Project not found' })
+        // lists
+        // tasks of list
+    } catch (err) {
+        if (DEBUG) {
+            console.log(err)
+        }
+        return res.send({ status: 500, message: 'Internal server Error' })
+    }
+})
 
 
-
-// app.delete('/projects', async (req, res) => {
+ 
+// route_projects.delete('/delete_projects', async (req, res) => {
 //     const user = req.session.user
 //     const { project_id } = req.body
 
@@ -83,7 +111,7 @@ route_bd_request.post('/new_project', async (req, res) => {
 // })
 
 
-// app.patch('/projects', async (req, res) => {
+// route_projects.patch('/change_projects', async (req, res) => {
 //     // Modify proyects
 //     const user = req.session.user
 //     const { project_id, columns, new_data } = req.body
@@ -97,4 +125,10 @@ route_bd_request.post('/new_project', async (req, res) => {
 //     // return res.redirect('/project/:id').status(201)
 // })
 
-export default route_bd_request
+
+
+
+
+
+
+export default route_projects

@@ -7,7 +7,7 @@ export const doRequest = async (url, method, data) => {
         throw new Error(`Unsupported HTTP method: ${method}`)
     }
 
-    const body = method.toUpperCase() === 'POST' || method === 'PUT' || method === 'PATCH' ? JSON.stringify(data) : undefined
+    const body = data ? JSON.stringify(data) : undefined
 
     try {
         const response = await fetch(apiUrl, {

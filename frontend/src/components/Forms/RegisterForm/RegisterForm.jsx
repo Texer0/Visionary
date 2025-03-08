@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import validator from 'validator'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 import FormConteiner from '../FormConteiner/FormConteiner'
@@ -94,32 +94,37 @@ const RegisterForm = ({}) => {
     }
 
     return (
-        <FormConteiner>
-        <form onSubmit={handleSubmit(handleSubmitForm)}>
-            <div>
+        <>
+            <FormConteiner>
+            <form onSubmit={handleSubmit(handleSubmitForm)}>
+                <div>
 
-                <Input type='text' placeholder='Username' 
-                    {...register('username')} required/>
-                <br/>
+                    <Input type='text' placeholder='Username' 
+                        {...register('username')} required/>
+                    <br/>
 
-                <Input type='email' placeholder='Email' 
-                    {...register('email')} required/>
-                <br/>
+                    <Input type='email' placeholder='Email' 
+                        {...register('email')} required/>
+                    <br/>
 
-                <Input placeholder='Password' type='password'
-                    {...register('password')} required />
-                <br/>
+                    <Input placeholder='Password' type='password'
+                        {...register('password')} required />
+                    <br/>
 
-                <Input placeholder='Repeat password' type='password' 
-                    {...register('password_repeated')} required/>
+                    <Input placeholder='Repeat password' type='password' 
+                        {...register('password_repeated')} required/>
 
-            </div>
-            <div>
-                <button className='m-2 w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white'
-                type="submit">Submit</button>
-            </div>
-        </form>
-        </FormConteiner>
+                </div>
+                <div>
+                    <button className='m-2 w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
+                    type="submit">Submit</button>
+                </div>
+            </form>
+            </FormConteiner>
+            <Link to= '/login'>
+                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-white'>Already have an account?</p>
+            </Link>
+        </>
     )
 }
 

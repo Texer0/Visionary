@@ -15,7 +15,7 @@ import Project from './components/pages/Project'
 import NewProject from './components/pages/NewProject' 
 import AuthGuard from './components/AuthGuard/AuthGuard'
 import Logout from './components/Logout/Logout'
-import Welcome from './components/pages/Welcome'
+import Welcome from './components/pages/Welcome/Welcome'
 
 function App() {
   return (
@@ -24,21 +24,20 @@ function App() {
     <Toaster>
     </Toaster>
 
-        <Navbar/>
-        <Logo/>
+        {/* <Navbar/> */}
+        {/* <Logo/> */}
         <Routes>
             <Route path='/'>
 
-                <Route path='/welcome' element={<Welcome/>} />
+                <Route path='/' element={<Welcome/>} />
                 <Route path='/login' element={<LogInForm/>} />
                 <Route path='/register' element={<RegisterForm/>} />
 
 				<Route element={<AuthGuard/>} >
                     <Route path='/home' element={<Home/>} />
 					<Route path='/projects' element={<Projects/>} />
-					<Route path='/projects/project/:id' element={<Project/>} />
+					<Route path='/project/:id' element={<Project/>} />
 					<Route path='/new_project' element={<NewProject/>} />
-					<Route path='/project' element={<Project/>} />
 				</Route>
 
                 <Route path='*' element={<NotFound/>} />
