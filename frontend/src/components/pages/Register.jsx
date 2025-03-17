@@ -4,13 +4,14 @@ import validator from 'validator'
 import { Link, useNavigate } from 'react-router-dom'
 
 
-import FormConteiner from '../FormConteiner/FormConteiner'
-import Input from '../Input/Input'
-import { style_warning, style_success, style_error, style_info } from '../../../utils/styles_warnings'
-import { doRequest } from '../../../utils/requests'
+import FormConteiner from '../Forms/FormConteiner/FormConteiner'
+import Input from '../Forms/Input/Input'
+import { style_warning, style_success, style_error, style_info } from '../../utils/styles_warnings'
+import { doRequest } from '../../utils/requests'
+import GoBack from '../GoBack/GoBack'
 
 
-const RegisterForm = ({}) => {
+const Register = ({}) => {
     const { register, handleSubmit, watch, reset, formState: { errors }, setError } = useForm()
     const navigate = useNavigate()
     const handleSubmitForm = async (event) => {
@@ -95,6 +96,7 @@ const RegisterForm = ({}) => {
 
     return (
         <>
+            <GoBack to={'/'}/>
             <FormConteiner>
             <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <div>
@@ -122,10 +124,10 @@ const RegisterForm = ({}) => {
             </form>
             </FormConteiner>
             <Link to= '/login'>
-                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-white'>Already have an account?</p>
+                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-indigo-300'>Already have an account?</p>
             </Link>
         </>
     )
 }
 
-export default RegisterForm
+export default Register

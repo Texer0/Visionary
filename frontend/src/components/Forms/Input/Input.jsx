@@ -6,7 +6,7 @@ const Input = React.forwardRef(({ value, className, onChange, placeholder, type 
             type={type} 
             placeholder={placeholder}
             ref={ref} 
-            className={`border-solid border w-[300px] h-[50px] rounded-[20px] pl-4 m-3 ${className || ''}`}
+            className={`border-solid border w-80 h-12 rounded-2xl pl-6 m-3 ${className || ''}`}
             {...props}
         />
     )

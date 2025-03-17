@@ -1,16 +1,16 @@
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
-import dotenv from 'dotenv'
 
-import { style_warning, style_success, style_error, style_info } from '../../../utils/styles_warnings'
-import FormConteiner from '../FormConteiner/FormConteiner'
-import Input from '../Input/Input'
-import { doRequest } from '../../../utils/requests'
+import { style_warning, style_success, style_error, style_info } from '../../utils/styles_warnings'
+import FormConteiner from '../Forms/FormConteiner/FormConteiner'
+import Input from '../Forms/Input/Input'
+import { doRequest } from '../../utils/requests'
+import GoBack from '../GoBack/GoBack'
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
-function LogInForm () {
+function LogIn () {
     const { register, handleSubmit, reset, formState: { errors }, watch } = useForm()
     const navigate = useNavigate()
 
@@ -54,6 +54,7 @@ function LogInForm () {
 
     return (
         <>
+            <GoBack to={'/'}/>
             <FormConteiner>
                 <form onSubmit={handleSubmit(handleSubmitForm)}>
                     <div>
@@ -69,10 +70,10 @@ function LogInForm () {
                 </form>
             </FormConteiner>
             <Link to= '/register'>
-                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-white'>Do not have an account?</p>
+                <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-indigo-300'>Do not have an account?</p>
             </Link>
         </>
     )
 }
 
-export default LogInForm
+export default LogIn

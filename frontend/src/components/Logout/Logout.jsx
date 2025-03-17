@@ -18,7 +18,22 @@ function Logout() {
 
     return (
         <button onClick={deleteCoockies} className="absolute top-10 right-10 bg-transparent" width={70}>
-            <img src="../../src/assets/logout.png" alt="Logout"/>
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 7 L15 12 L10 17" />
+                <path d="M15 12 H3" />
+
+                <path d="M18 6 H22 V18 H18" />
+            </svg>
+
         </button>
 )}
 

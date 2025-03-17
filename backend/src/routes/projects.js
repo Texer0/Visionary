@@ -39,6 +39,7 @@ route_projects.post('/', async (req, res) => {
         if (DEBUG) {
             console.log(err)
         }
+        res.send({ status: 500, message: 'Internal server Error'})
     }
 })
 
@@ -77,18 +78,20 @@ route_projects.post('/project', async (req, res) => {
         
         const result = await select_query('user_has_project', 'project_id', `user_hash = '${hash}'`)
         
-        console.log("Result in backend", result)
-        
         for (const project_id of result) {
             if (project_id.project_id === parseInt(id)) {
                 const project = await select_query('project', '*', `id = ${id}`)
+                
+                // pedir todo del project con la id
+                // pedir las listas con el id del project
+                // pedir las tareas con el id del project
+                // lists
+                // tasks of list
                 return res.send({ status: 200, project: project[0] })
             }
         }
-        
         return res.send({ status: 404, message: 'Project not found' })
-        // lists
-        // tasks of list
+        
     } catch (err) {
         if (DEBUG) {
             console.log(err)

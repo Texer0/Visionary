@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom"
 
 import { doRequest } from "../../utils/requests"
-import ListOfTasks from "../ListOfTasks/ListOfTasks"
+import ListOfTasks from "./Projects/ListOfTasks/ListOfTasks"
 import { useEffect, useState } from "react"
 import { getCookie } from "../../utils/coockie_managment"
+import { toast } from "sonner"
+import { style_warning } from "../../utils/styles_warnings"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
@@ -20,12 +22,22 @@ function Project() {
                     const result = await doRequest(`projects/project`, 'POST', { ...userData, id: id})
                     console.log("RESULT IN FRONTEND => ", result)
 
-                    // if (result.status === 404) {
-                    //     setProject([])
-                    //     //  toast
-                    // } else if (result.project) {
-                    //     setProject(result.project)
-                    // }
+                    if (result.status === 404) {
+                        setProject([])
+                        toast.warning(result.message, {
+                            duration: 3000,
+                            style: style_warning,
+                        })
+                    } else if (result.status === 500) {
+                        toast.error(result.message, {
+                            duration: 3000,
+                            style: style_error,
+                        })
+                    }
+                    else if (result.project) {
+                        // setProject(result.project)
+                        console.log(result.project)
+                    }
                 } catch (e) {
                     if (DEBUG) {
                         console.error('A problem has occurred:', e)
