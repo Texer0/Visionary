@@ -98,30 +98,25 @@ const Register = ({}) => {
         <>
             <GoBack to={'/'}/>
             <FormConteiner>
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
-                <div>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                    <div>
+                        <Input type='text' placeholder='Username' 
+                            {...register('username')} required/>
 
-                    <Input type='text' placeholder='Username' 
-                        {...register('username')} required/>
-                    <br/>
+                        <Input type='email' placeholder='Email' 
+                            {...register('email')} required/>
 
-                    <Input type='email' placeholder='Email' 
-                        {...register('email')} required/>
-                    <br/>
+                        <Input placeholder='Password' type='password'
+                            {...register('password')} required />
 
-                    <Input placeholder='Password' type='password'
-                        {...register('password')} required />
-                    <br/>
-
-                    <Input placeholder='Repeat password' type='password' 
-                        {...register('password_repeated')} required/>
-
-                </div>
-                <div>
-                    <button className='m-2 w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
-                    type="submit">Submit</button>
-                </div>
-            </form>
+                        <Input placeholder='Repeat password' type='password' 
+                            {...register('password_repeated')} required/>
+                    </div>
+                    <div>
+                        <button className='m-2 w-48 h-14 rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
+                        type="submit">Submit</button>
+                    </div>
+                </form>
             </FormConteiner>
             <Link to= '/login'>
                 <p className='text-end pr-8 transition-all duration-300 transform hover:brightness-150 hover:text-indigo-300'>Already have an account?</p>

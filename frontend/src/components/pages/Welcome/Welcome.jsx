@@ -84,7 +84,7 @@ const Welcome = () => {
         </div>
     </div>
 
-    <footer className="bg-black text-white py-4">
+    <footer className="bg-black text-white py-4 w-screen">
         <p className="text-sm text-center">© 2025 Visionary. All rights reserved.</p>
         <div className="flex justify-center gap-4 mt-2">
             <a href="/privacy" className="hover:underline">Privacy Policy</a>

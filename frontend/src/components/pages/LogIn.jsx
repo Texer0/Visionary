@@ -59,12 +59,10 @@ function LogIn () {
                 <form onSubmit={handleSubmit(handleSubmitForm)}>
                     <div>
                         <Input type='email' placeholder='Email'{...register('email')} required/>
-                        <br/>
                         <Input type='password' placeholder='Password' {...register('password')} required/>
                     </div>
-
                     <div className='m-2'>
-                        <button className=' w-[200px] h-[60px] rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
+                        <button className='w-44 h-14 rounded-2xl text-2xl bg-[#48BEBC] text-white p-3'
                         type="submit">Submit</button>
                     </div>
                 </form>

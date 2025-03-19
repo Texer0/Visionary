@@ -31,12 +31,11 @@ function App() {
                 <Route path='/register' element={<Register/>} />
                 <Route path='/FAQ' element={<FAQ/>} />
 
-				{/* <Route element={<AuthGuard/>} > */}
+				<Route element={<AuthGuard/>} >
                     <Route path='/home' element={<Home/>} />
 					<Route path='/projects' element={<Projects/>} />
 					<Route path='/project/:id' element={<Project/>} />
-					<Route path='/new_project' element={<NewProject/>} />
-				{/* </Route> */}
+				</Route>
 
                 <Route path='*' element={<NotFound/>} />
             </Route>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { getCookie } from "../../utils/coockie_managment"
 import { toast } from "sonner"
 import { style_warning } from "../../utils/styles_warnings"
+import GoBack from "../GoBack/GoBack"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
@@ -36,7 +37,7 @@ function Project() {
                     }
                     else if (result.project) {
                         // setProject(result.project)
-                        console.log(result.project)
+                        console.log("Result in Project", result.project)
                     }
                 } catch (e) {
                     if (DEBUG) {
@@ -61,9 +62,12 @@ function Project() {
       ))
 
     return (
-        <div className="text-white flex flex-row overflow-x-auto">
-            {components}
-        </div>
+        <>
+            <GoBack to={'/projects'}/>
+            <div className="text-white flex flex-row overflow-x-auto">
+                {components}
+            </div>
+        </>
     )
 }
 

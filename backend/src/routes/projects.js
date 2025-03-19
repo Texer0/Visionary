@@ -50,13 +50,22 @@ route_projects.post('/new_project', async (req, res) => {
     try {
         var hash = await select_query('user', 'hash', `email = '${email}'`)
         hash = hash[0].hash
+        
+        const userProjects = await select_query('user_has_project', 'project_id', `user_hash = '${hash}'`)
+        console.log(userProjects)
+
+        for (const userProject of userProjects) {
+            const storedTitle = await select_query('project', 'title', `id = ${userProject.project_id}`)
+            if (storedTitle[0].title === title) {
+                return res.send({ status: 409, message: 'The project already exists' })
+            }
+        }
 
         await insert_into_query('project', 'title, description, link', `'${title}', '${description}', '${link}'`)
         
         var project_id = await select_query('project', 'id', `title = '${title}'`)
         project_id = project_id[0].id
         
-        console.log(title, description, link, project_id)
         await insert_into_query('user_has_project', 'project_id, user_hash', ` ${project_id}, '${hash}'`)
         
         res.send({ status: 201, id: project_id })

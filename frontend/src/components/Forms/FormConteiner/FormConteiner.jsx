@@ -13,7 +13,7 @@ function FormConteiner({ children }) {
     }
     
     return (
-        <div className={`bg-[#4f9eb6] shadow-[0px_0px_10px_10px_rgba(0,0,0,0.3)] rounded-[60px] content-center w-[27rem] place-items-center ${sizeClass} pb-4`}>
+        <div className={`bg-[#4f9eb6] shadow-[0px_0px_10px_10px_rgba(0,0,0,0.3)] rounded-[3rem] content-center w-[27rem] place-items-center ${sizeClass} pb-4`}>
             <img src="src/assets/Visionary.png" alt="logo" width={500} className={`${imgMarginBottom} m-3 p-6`}/>
             {children}
         </div>

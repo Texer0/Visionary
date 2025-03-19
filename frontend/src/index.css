@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.no_scroll_x {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   display: flex;

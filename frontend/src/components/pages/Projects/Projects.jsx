@@ -8,18 +8,22 @@ import { getCookie } from "../../../utils/coockie_managment"
 import { doRequest } from "../../../utils/requests"
 import { style_error } from "../../../utils/styles_warnings"
 import Input from "../../Forms/Input/Input"
+import GoBack from "../../GoBack/GoBack"
+import NewProject from "../NewProject"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
 function Projects() {
     const [currentPage, setCurrentPage] = useState(1)
+    const [projectsFromUser, setProjectsFromUser] = useState([])
+    const [showNewProject, setShowNewProject] = useState(false)
+
     const itemsPerPage = 9
 
     const handlePageChange = (page) => {
         setCurrentPage(page)
     }
     
-    const [projectsFromUser, setProjectsFromUser] = useState([])
 
     useEffect(() => {
         const askForProjects = async () => {
@@ -60,12 +64,14 @@ function Projects() {
 
     return (
         <div className="flex flex-col h-screen w-screen">
+            <GoBack to={'/home'}/>
             <div className="ml-auto mt-10 mr-10 mb-4">
-                <Input className="rounded-3xl w-72" placeholder='Search...' ></Input>
+                <Input className="rounded-3xl w-72" placeholder='Search...'/>
             </div>
-            <div className="w-fit h-10 rounded-3xl flex flex-row-reverse gap-8 ml-auto">
-                <button className="bg-[#48BEBC] p-0 w-10 mr-24">
-                    <svg id="trash-icon" width="40" height="40" className="p-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div className="w-fit h-10 rounded-3xl flex flex-row-reverse gap-8 ml-auto mr-4">
+                <button 
+                className="bg-[#48BEBC] p-0 w-10 mr-24">
+                    <svg width="40" height="40" className="p-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 6h18"></path>
                         <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
@@ -80,7 +86,8 @@ function Projects() {
                     </svg>
                 </button>
 
-                <button className="bg-[#48BEBC] p-0 w-10">
+                <button className="bg-[#48BEBC] p-0 w-10"
+                onClick={() => {setShowNewProject(true)}}>
                     <svg width="40" height="40" viewBox="0 0 24 24" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -88,17 +95,7 @@ function Projects() {
                 </button>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-            <div className="w-4/6 m-auto">
+            <div className="w-4/6 m-auto h-3/6">
                 <div>
                     {projects.length > 0 ? (
                         <section className="flex flex-wrap justify-center">
@@ -113,18 +110,28 @@ function Projects() {
                     )}
                 </div>
                 {projects.length >= itemsPerPage + 1 && (
-                    <div className="space-x-1 absolute bottom-32 right-[50%] transform translate-x-1/2 translate-y-1/2">
-                        <button disabled={currentPage === 1} className="hover:bg-slate-300"
-                        onClick={() => handlePageChange(currentPage - 1)}>
-                            Previous
-                        </button>
-                        <button disabled={currentPage === totalPages} className="hover:bg-slate-300"
-                        onClick={() => handlePageChange(currentPage + 1)}>
-                            Next
-                        </button>
-                    </div>
+                <div className="space-x-1 absolute bottom-32 right-[50%] transform translate-x-1/2 translate-y-1/2">
+                    <button disabled={currentPage === 1} className="hover:bg-slate-300"
+                    onClick={() => handlePageChange(currentPage - 1)}>
+                        {'<'}
+                    </button>
+                    <button disabled={currentPage === totalPages} className="hover:bg-slate-300"
+                    onClick={() => handlePageChange(currentPage + 1)}>
+                        {'>'}
+                    </button>
+                </div>
                 )}
             </div>
+
+            {showNewProject && (
+                <div 
+                    className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50"
+                    onClick={() => setShowNewProject(false)}>
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <NewProject onClose={() => setShowNewProject(false)} />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
