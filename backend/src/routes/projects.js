@@ -9,10 +9,8 @@ const DEBUG = process.env.DEBUG
 
 const route_projects = express.Router()
 
-route_projects.post('/', async (req, res) => {
+route_projects.get('/', async (req, res) => {
     const email = req.body.email
-    
-    console.log(email)
 	
     try {
         const user = await select_query('user', '*', `email = '${email}'`)
@@ -52,7 +50,6 @@ route_projects.post('/new_project', async (req, res) => {
         hash = hash[0].hash
         
         const userProjects = await select_query('user_has_project', 'project_id', `user_hash = '${hash}'`)
-        console.log(userProjects)
 
         for (const userProject of userProjects) {
             const storedTitle = await select_query('project', 'title', `id = ${userProject.project_id}`)
@@ -67,60 +64,76 @@ route_projects.post('/new_project', async (req, res) => {
         project_id = project_id[0].id
         
         await insert_into_query('user_has_project', 'project_id, user_hash', ` ${project_id}, '${hash}'`)
+
+        const defaultLists = [
+            { title: 'Stage', color: '#FF1200'}, 
+            { title: 'In progress', color: '#aaaa11'},
+            { title: 'Completed', color: '#216E4E'}
+        ]
+
+        for (const defaultList of defaultLists) {
+            await insert_into_query('list', 'title, color, project_id', `'${defaultList.title}', '${defaultList.color}', ${project_id}`)
+        }
         
         res.send({ status: 201, id: project_id })
     } catch (err) {
         if (DEBUG) {
             console.log("Error while creating the project", err)
         }
-        return res.send({ status: 500, message: "Error while creating the project" })
+        res.send({ status: 500, message: "Error while creating the project" })
     }
 })
 
 
-route_projects.post('/project', async (req, res) => {
-    const { email, id } = req.body
-    
-    try {
-        var hash = await select_query('user', 'hash', `email = '${email}'`)
-        hash = hash[0].hash
-        
-        const result = await select_query('user_has_project', 'project_id', `user_hash = '${hash}'`)
-        
-        for (const project_id of result) {
-            if (project_id.project_id === parseInt(id)) {
-                const project = await select_query('project', '*', `id = ${id}`)
-                
-                // pedir todo del project con la id
-                // pedir las listas con el id del project
-                // pedir las tareas con el id del project
-                // lists
-                // tasks of list
-                return res.send({ status: 200, project: project[0] })
-            }
-        }
-        return res.send({ status: 404, message: 'Project not found' })
-        
+route_projects.get('/project', async (req, res) => {
+    const { id } = req.body
+
+    try {        
+        const project = await select_query('project', '*', `id = ${id}`)
+        const lists = await select_query('list', 'id, title, color', `project_id = ${id}`)
+
+        res.send({ status: 200, project: project, lists: lists })
+
     } catch (err) {
         if (DEBUG) {
             console.log(err)
         }
-        return res.send({ status: 500, message: 'Internal server Error' })
+        res.send({ status: 500, message: 'Internal server Error' })
     }
 })
 
 
  
-// route_projects.delete('/delete_projects', async (req, res) => {
-//     const user = req.session.user
-//     const { project_id } = req.body
+route_projects.delete('/', async (req, res) => {
+    const { email, projects_id } = req.body
 
-//     await delete_query('user_has_project', `user_hash = '${user.hash}' and project_id = ${project_id}`)
-//     await delete_query('project', `id = ${project_id}`)
-    
-//     res.status(201)
-//     res.redirect('/home')
-// })
+    try {
+        var hash = await select_query('user', 'hash', `email = '${email}'`)
+        hash = hash[0].hash
+
+        for (const project_id of projects_id) {
+            await delete_query('user_has_project', `user_hash = '${hash}' and project_id = ${project_id}`)
+            await delete_query('project', `id = ${project_id}`)
+
+            var listsIds = await select_query('list', 'id', `project_id = ${project_id}`)
+            console.log(listsIds)
+
+            for (const list_id of listsIds) {
+                await delete_query('task', `list_id = ${list_id.id}`)
+            }
+
+            await delete_query('list', `project_id = ${project_id}`)
+        }
+        
+        res.send({ status: 201, message: 'Project/s deleted correctly' })
+
+    } catch (err) {
+        if (DEBUG) {
+            console.log(err)
+        }
+        res.send({ status: 500, message: 'Internal server Error' })
+    }
+})
 
 
 // route_projects.patch('/change_projects', async (req, res) => {

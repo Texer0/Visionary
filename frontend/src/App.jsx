@@ -1,29 +1,29 @@
 import './App.css'
 import './index.css' 
-import { Route, Routes } from 'react-router-dom' 
+import { Route } from 'react-router-dom' 
 import { Toaster } from 'sonner'
 import { CookiesProvider } from 'react-cookie'
 
-import Logo from './components/Logo/Logo' 
-import Navbar from './components/NavBar/NavBar'
-import Home from './components/pages/Home'
-import NotFound from './components/pages/NotFound' 
-import Project from './components/pages/Project' 
-import NewProject from './components/pages/NewProject' 
-import AuthGuard from './components/AuthGuard/AuthGuard'
-import Logout from './components/Logout/Logout'
 import Welcome from './components/pages/Welcome/Welcome'
-import Projects from './components/pages/Projects/Projects'
+import Home from './components/pages/Home'
 import LogIn from './components/pages/LogIn'
 import Register from './components/pages/Register'
 import FAQ from './components/pages/FAQ'
+import NotFound from './components/pages/NotFound' 
+import Project from './components/pages/Project' 
+import AuthGuard from './components/AuthGuard/AuthGuard'
+import Projects from './components/pages/Projects/Projects'
+import RoutesWithNotDound from './utils/RoutesWithNotFound'
+import Navbar from './components/NavBar/NavBar'
+import Logout from './components/Logout/Logout'
+import Logo from './components/Logo/Logo'
 
 function App() {
   return (
     <CookiesProvider>
     <Toaster/>
 
-        <Routes>
+        <RoutesWithNotDound>
             <Route path='/'>
 
                 <Route path='/' element={<Welcome/>} />
@@ -32,14 +32,14 @@ function App() {
                 <Route path='/FAQ' element={<FAQ/>} />
 
 				<Route element={<AuthGuard/>} >
-                    <Route path='/home' element={<Home/>} />
-					<Route path='/projects' element={<Projects/>} />
-					<Route path='/project/:id' element={<Project/>} />
+                        <Route path='/home' element={<Home/>} />
+                        <Route path='/projects' element={<Projects/>} />
+                        <Route path='/project/:id' element={<Project/>} />
 				</Route>
 
                 <Route path='*' element={<NotFound/>} />
             </Route>
-        </Routes>
+        </RoutesWithNotDound>
     </CookiesProvider>
   )
 }

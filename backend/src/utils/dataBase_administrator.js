@@ -27,7 +27,7 @@ async function try_query(query) {
         console.log('An error has ocurried in try_query function: '.red, err)
         throw err
     } finally {
-        await connection.end()
+        if (connection) await connection.end()
     }
 }
 

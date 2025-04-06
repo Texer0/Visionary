@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
 import { useState } from "react";
 import FAQ_Question from "./FAQ_Question/FAQ_Question";
+import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 
 const Welcome = () => {
     const SUPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL
-    
+
     return (
+
 <div className="bg-gradient-to-b from-[#0842caa9] via-gray-200 to-black flex flex-col w-screen min-h-screen">
     
     <header className="mt-10 mx-auto">
@@ -94,6 +96,7 @@ const Welcome = () => {
     </footer>
 
 </div>
+
     )
 }
   

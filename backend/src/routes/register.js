@@ -33,35 +33,34 @@ route_register.post('/', async (req, res) => {
         await insert_into_query('user', 'name, email, password, hash', `'${name}', '${email}', '${hashedPassword}', '${v4()}'`)
         
     } catch (err) {
-        if (DEBUG) {console.error(err)}
-        
+        if (DEBUG) {
+            console.error(err)
+        }
         return res.send({data: 'A problem has ocurred with registration', status: 400})
     }    
 
-        const user = {
-            name: name,
-            email: email,
-        }
-    
-        const token = create_JWT(user, '1h')
-    
-        res.cookie('Visionary_access_token', token, {
-            httpOnly: true,
-            secure: !DEBUG,
-            maxAge: COOCKIE_MAXAGE,
-            sameSite: 'strict'
-        })
-        
-        res.cookie('Visionary_user_data', JSON.stringify(user), {
-            httpOnly: false,
-            secure: !DEBUG,
-            maxAge: COOCKIE_MAXAGE,
-            sameSite: 'lax'
-        })
+    const user = {
+        name: name,
+        email: email,
+    }
 
-        return res.send({status: 201})
+    const token = create_JWT(user, '1h')
 
+    res.cookie('Visionary_access_token', token, {
+        httpOnly: true,
+        secure: !DEBUG,
+        maxAge: COOCKIE_MAXAGE,
+        sameSite: 'strict'
+    })
+    
+    res.cookie('Visionary_user_data', JSON.stringify(user), {
+        httpOnly: false,
+        secure: !DEBUG,
+        maxAge: COOCKIE_MAXAGE,
+        sameSite: 'lax'
+    })
+
+    res.send({ status: 201 })
 })
-
 
 export default route_register

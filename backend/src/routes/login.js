@@ -25,13 +25,14 @@ route_login.post('/', async (req, res) => {
     var stored_password = await select_query('user', 'password', `email = '${email}'`)
 
     try {
-
         let isValid = await bcrypt.compare(password, stored_password[0].password)
         if (!isValid) {return res.send({status: 401, data: 'Invalid password'})}
 
     } catch (err){
-        if (DEBUG) {console.log(err)}
-        return res.send({status: 404})
+        if (DEBUG) {
+            console.log(err)
+        }
+        return res.send({ status: 404 })
     }
 
     let result = await select_query('user', '*',  `email = '${email}'`)
@@ -58,7 +59,7 @@ route_login.post('/', async (req, res) => {
         sameSite: 'lax'
     })
     
-    res.send({status: 201})
+    res.send({ status: 201 })
 })
 
 export default route_login

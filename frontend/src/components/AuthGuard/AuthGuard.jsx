@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 import { useCookies } from "react-cookie"
 import { verifyCookies } from "../../utils/coockie_managment"
-import LoadingSpinner from "./LoadingSpinner/LoadingSpinner"
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 
 const AuthGuard = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["Visionary_token"])

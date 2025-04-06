@@ -3,24 +3,36 @@ import { toast } from 'sonner'
 import validator from 'validator'
 import { Link, useNavigate } from 'react-router-dom'
 
-
 import FormConteiner from '../Forms/FormConteiner/FormConteiner'
 import Input from '../Forms/Input/Input'
 import { style_warning, style_success, style_error, style_info } from '../../utils/styles_warnings'
 import { doRequest } from '../../utils/requests'
 import GoBack from '../GoBack/GoBack'
-
+import { useState } from 'react'
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 
 const Register = ({}) => {
-    const { register, handleSubmit, watch, reset, formState: { errors }, setError } = useForm()
+    const { register, handleSubmit, watch, reset, formState: { errors }, setError } = useForm({
+        defaultValues: {
+            username: "",
+            email: "",
+            password: "",
+            password_repeated: ""
+        }
+    })
     const navigate = useNavigate()
-    const handleSubmitForm = async (event) => {
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-        const username = watch('username')
-        const email = watch('email')
-        const password = watch('password')
-        const password_repeated = watch('password_repeated')
 
+    const handleSubmitForm = async () => {
+        const username = document.getElementById('username').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+        const password_repeated = document.getElementById('password_repeated').value
+
+        if (isSubmitting) return
+
+        setIsSubmitting(true)
         
         if (username.length < 6) {
             toast.warning('Name must be at least 6 character', {
@@ -67,6 +79,8 @@ const Register = ({}) => {
                 style: style_error,
             })
             return
+        } finally {
+            setIsSubmitting(false)
         }
 
         if (result.data) {
@@ -83,14 +97,11 @@ const Register = ({}) => {
                 style: style_success,
             })
             navigate('/home')
-            return
-        
         } else {
             toast.error(result.data, {
                 duration: 3000,
                 style: style_error,
             })
-            return
         }
     }
 
@@ -100,21 +111,32 @@ const Register = ({}) => {
             <FormConteiner>
                 <form onSubmit={handleSubmit(handleSubmitForm)}>
                     <div>
-                        <Input type='text' placeholder='Username' 
+                        <Input id={'username'} type='text' placeholder='Username' 
                             {...register('username')} required/>
 
-                        <Input type='email' placeholder='Email' 
+                        <Input id={'email'} type='email' placeholder='Email' 
                             {...register('email')} required/>
 
-                        <Input placeholder='Password' type='password'
+                        <Input id={'password'} type='password' placeholder='Password'
                             {...register('password')} required />
 
-                        <Input placeholder='Repeat password' type='password' 
+                        <Input id={'password_repeated'} type='password' placeholder='Repeat password'
                             {...register('password_repeated')} required/>
                     </div>
                     <div>
-                        <button className='m-2 w-48 h-14 rounded-[20px] text-2xl bg-[#48BEBC] text-white pt-3'
-                        type="submit">Submit</button>
+                        <div className='m-2'>
+                            <button type="submit" disabled={isSubmitting}
+                                className={`w-44 h-14 rounded-2xl text-2xl bg-[#48BEBC] text-white px-10 p-3 transition-all duration-200 relative
+                                ${isSubmitting ? 'bg-[#8DCCCC]' : 'bg-[#48BEBC]'}`}>
+                                    {isSubmitting && (
+                                        <div className='absolute top-1 left-14'>
+                                            <LoadingSpinner width='14' height='12'
+                                            radio_1='10' radio_2='1'/>
+                                        </div>
+                                    )}
+                                    {!isSubmitting && 'Submit'}
+                            </button>
+                        </div>
                     </div>
                 </form>
             </FormConteiner>

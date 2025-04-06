@@ -44,3 +44,8 @@ body {
 .read-the-docs {
   color: #888;
 }
+
+input {
+  background-color: white;
+  color: black;
+}

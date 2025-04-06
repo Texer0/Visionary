@@ -2,22 +2,23 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 
-import Input from "../Forms/Input/Input"
-import { doRequest } from "../../utils/requests"
-import { style_error, style_success, style_warning } from "../../utils/styles_warnings"
-import { getCookie } from "../../utils/coockie_managment"
+import Input from "../../../Forms/Input/Input"
+import { doRequest } from "../../../../utils/requests"
+import { style_error, style_success, style_warning } from "../../../../utils/styles_warnings"
+import { getCookie } from "../../../../utils/coockie_managment"
 import { useState } from "react"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
 function NewProject({ onClose }) {
-    const { register, handleSubmit, reset, formState: { errors }, watch } = useForm()
+    const { register, handleSubmit, reset, formState: { errors } , watch } = useForm()
     const navigate = useNavigate()
 
     const handleSubmitForm = async () => {
-        const title = watch('title')
-        const description = watch('description')
-        const link = watch('link')
+        const title = document.getElementById('title').value
+        const description = document.getElementById('description').value
+        const link = document.getElementById('link').value
+
 
         const user = await getCookie('Visionary_user_data')
 
@@ -37,7 +38,7 @@ function NewProject({ onClose }) {
                     style: style_success,
                 })
                 onClose()
-                navigate(`/project/:${result.id}`)
+                navigate(`/project/${result.id}`)
             }
             
             if (result.status === 409) {
@@ -76,11 +77,11 @@ function NewProject({ onClose }) {
                         <h2 className="inline-block">Title</h2>
                         <span className="text-red-600 inline-block text-2xl font-bold ml-1">*</span>
                     </div>
-                    <Input className='text-black font-normal' type="text" name="title" {...register('title')} required/>
+                    <Input className='text-black font-normal' type="text" name="title" id={'title'} {...register('title')} required/>
                     <h2 className="mt-2 float-start pl-12">Description</h2>
-                    <Input className='text-black font-normal' type="text" name="description" {...register('description')}/>
+                    <Input className='text-black font-normal' type="text" name="description" id={'description'} {...register('description')}/>
                     <h2 className="mt-2 float-start pl-12">Github</h2>
-                    <Input className='text-black font-normal' type="text" name="github" {...register('link')}/>
+                    <Input className='text-black font-normal' type="text" name="github" id={'link'} {...register('link')}/>
                 </div>
                 <div className="flex justify-center mt-4">
                     <button className="p-1 w-36 h-12 rounded-2xl text-2xl bg-[#48BEBC] text-white" type="submit">

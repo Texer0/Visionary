@@ -5,23 +5,24 @@ import ListOfTasks from "./Projects/ListOfTasks/ListOfTasks"
 import { useEffect, useState } from "react"
 import { getCookie } from "../../utils/coockie_managment"
 import { toast } from "sonner"
-import { style_warning } from "../../utils/styles_warnings"
+import { style_error, style_warning } from "../../utils/styles_warnings"
 import GoBack from "../GoBack/GoBack"
 
 const DEBUG = parseInt(import.meta.env.VITE_DEBUG)
 
 
 function Project() {
-    const { id } = useParams()
+    var { id } = useParams()
+    if (id.includes(':')) {
+        id = id.substring(0, id.length)
+    }
 
         const [project, setProject] = useState([])
     
         useEffect(() => {
             const askForProject = async () => {
                 try {
-                    var userData = getCookie('Visionary_user_data')
-                    const result = await doRequest(`projects/project`, 'POST', { ...userData, id: id})
-                    console.log("RESULT IN FRONTEND => ", result)
+                    const result = await doRequest(`projects/project`, 'get', { id: id})
 
                     if (result.status === 404) {
                         setProject([])
@@ -36,8 +37,7 @@ function Project() {
                         })
                     }
                     else if (result.project) {
-                        // setProject(result.project)
-                        console.log("Result in Project", result.project)
+                        setProject(result)
                     }
                 } catch (e) {
                     if (DEBUG) {
@@ -48,18 +48,12 @@ function Project() {
     
             askForProject()
         }, [id])
-    
-        console.log("Project: ", project)
 
-    let listsAmount = [
-        { title: 'Stage', color: '#FF1200'}, 
-        { title: 'In progress', color: '#aaaa11'},
-        { title: 'Completed', color: '#216E4E'}
-    ]
-
-    const components = listsAmount.map((item, index) => (
-        <ListOfTasks title={item.title} color={item.color} ></ListOfTasks>
-      ))
+        const projectLists = project.lists || undefined
+        
+        const components = projectLists?.map((item, index) => (
+            <ListOfTasks title={item.title} color={item.color} ></ListOfTasks>
+        ))
 
     return (
         <>
